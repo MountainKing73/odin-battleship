@@ -65,3 +65,46 @@ test("Place ship horizontal", () => {
     sunk: false,
   });
 });
+
+test("Test successful attack", () => {
+  const gameboard = new Gameboard();
+
+  gameboard.placeShip([3, 4], 3, "H");
+
+  gameboard.receiveAttack([4, 4]);
+
+  expect(gameboard.board[4][4].hits).toEqual(1);
+});
+
+test("Test missed attack", () => {
+  const gameboard = new Gameboard();
+
+  gameboard.placeShip([3, 4], 3, "H");
+
+  gameboard.receiveAttack([4, 5]);
+
+  expect(gameboard.board[4][5]).toMatch("X");
+});
+
+test("Test sunk ships", () => {
+  const gameboard = new Gameboard();
+
+  gameboard.placeShip([3, 4], 3, "H");
+
+  gameboard.receiveAttack([3, 4]);
+  gameboard.receiveAttack([4, 4]);
+  gameboard.receiveAttack([5, 4]);
+
+  expect(gameboard.allSunk()).toBeTruthy();
+});
+
+test("Test not sunk ships", () => {
+  const gameboard = new Gameboard();
+
+  gameboard.placeShip([3, 4], 3, "H");
+
+  gameboard.receiveAttack([3, 4]);
+  gameboard.receiveAttack([4, 4]);
+
+  expect(gameboard.allSunk()).toBeTruthy();
+});

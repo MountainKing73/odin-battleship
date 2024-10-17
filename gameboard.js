@@ -8,6 +8,7 @@ const initialize2DArray = (width, height, val = null) =>
 class Gameboard {
   constructor() {
     this.board = initialize2DArray(10, 10);
+    this.ships = new Array();
   }
 
   placeShip(startLoc, length, direction) {
@@ -21,9 +22,24 @@ class Gameboard {
     }
 
     const ship = new Ship(length);
+    this.ships.push(ship);
     for (let i = 0; i < length; i++) {
       this.board[startLoc[0] + xInc * i][startLoc[1] + yInc * i] = ship;
     }
+  }
+
+  receiveAttack(loc) {
+    let content = this.board[loc[0]][loc[1]];
+
+    if (content instanceof Ship) {
+      content.hit();
+    } else {
+      this.board[loc[0]][loc[1]] = "X";
+    }
+  }
+
+  allSunk() {
+    return this.ships.filter((ship) => ship.isSunk());
   }
 }
 
