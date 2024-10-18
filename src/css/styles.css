@@ -1,0 +1,34 @@
+#GameContainer {
+  display: flex;
+  gap: 50px;
+}
+
+.PlayerContainer {
+  width: 420px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+#Player1Container {
+  background-color: lightgrey;
+}
+
+#Player2Container {
+  background-color: lightgrey;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.square {
+  height: 40px;
+  width: 40px;
+  border: solid 1px;
+}
+
+.ship {
+  background-color: darkgray;
+}

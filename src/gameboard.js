@@ -24,8 +24,11 @@ class Gameboard {
     const ship = new Ship(length);
     this.ships.push(ship);
     for (let i = 0; i < length; i++) {
-      this.board[startLoc[0] + xInc * i][startLoc[1] + yInc * i] = ship;
+      this.board[startLoc[1] + yInc * i][startLoc[0] + xInc * i] = ship;
     }
+  }
+  getBoard() {
+    return this.board;
   }
 
   receiveAttack(loc) {
