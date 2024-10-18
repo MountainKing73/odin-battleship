@@ -14,18 +14,65 @@ class GameController {
     this.gameUI.refreshBoards();
   }
 
+  #getRandomLoc() {
+    return [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
+  }
+
+  #getRandomDir() {
+    const choice = ["V", "H"];
+    const rnd = Math.floor(Math.random() * 2);
+    return choice[rnd];
+  }
+
   randomShips(player) {
-    player.getGameboard().placeShip([0, 0], 2, "V");
-    player.getGameboard().placeShip([1, 0], 3, "V");
-    player.getGameboard().placeShip([2, 0], 3, "V");
-    player.getGameboard().placeShip([3, 0], 4, "V");
-    player.getGameboard().placeShip([4, 0], 5, "V");
+    while (true) {
+      try {
+        player
+          .getGameboard()
+          .placeShip(this.#getRandomLoc(), 2, this.#getRandomDir());
+        break;
+      } catch (error) {}
+    }
+    while (true) {
+      try {
+        player
+          .getGameboard()
+          .placeShip(this.#getRandomLoc(), 3, this.#getRandomDir());
+        break;
+      } catch (error) {}
+    }
+    while (true) {
+      try {
+        player
+          .getGameboard()
+          .placeShip(this.#getRandomLoc(), 3, this.#getRandomDir());
+        break;
+      } catch (error) {}
+    }
+    while (true) {
+      try {
+        player
+          .getGameboard()
+          .placeShip(this.#getRandomLoc(), 4, this.#getRandomDir());
+        break;
+      } catch (error) {}
+    }
+    while (true) {
+      try {
+        player
+          .getGameboard()
+          .placeShip(this.#getRandomLoc(), 5, this.#getRandomDir());
+        break;
+      } catch (error) {}
+    }
+
     this.gameUI.refreshBoards();
   }
 
   run() {
     console.log("starting game");
     this.randomShips(this.player1);
+    this.randomShips(this.player2);
   }
 }
 

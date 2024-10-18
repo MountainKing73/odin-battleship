@@ -27,17 +27,17 @@ test("Place ship vertical", () => {
     hits: 0,
     sunk: false,
   });
-  expect(gameboard.board[0][1]).toMatchObject({
+  expect(gameboard.board[1][0]).toMatchObject({
     len: 4,
     hits: 0,
     sunk: false,
   });
-  expect(gameboard.board[0][2]).toMatchObject({
+  expect(gameboard.board[2][0]).toMatchObject({
     len: 4,
     hits: 0,
     sunk: false,
   });
-  expect(gameboard.board[0][3]).toMatchObject({
+  expect(gameboard.board[3][0]).toMatchObject({
     len: 4,
     hits: 0,
     sunk: false,
@@ -49,7 +49,7 @@ test("Place ship horizontal", () => {
 
   gameboard.placeShip([3, 4], 3, "H");
 
-  expect(gameboard.board[3][4]).toMatchObject({
+  expect(gameboard.board[4][3]).toMatchObject({
     len: 3,
     hits: 0,
     sunk: false,
@@ -59,11 +59,27 @@ test("Place ship horizontal", () => {
     hits: 0,
     sunk: false,
   });
-  expect(gameboard.board[5][4]).toMatchObject({
+  expect(gameboard.board[4][5]).toMatchObject({
     len: 3,
     hits: 0,
     sunk: false,
   });
+});
+
+test("Test ship placement off board", () => {
+  const gameboard = new Gameboard();
+
+  expect(() => {
+    gameboard.placeShip([10, 0], 3, "V");
+  }).toThrow("Invalid placement");
+});
+
+test("Test ship placement ends off board", () => {
+  const gameboard = new Gameboard();
+
+  expect(() => {
+    gameboard.placeShip([0, 9], 3, "V");
+  }).toThrow("Invalid placement");
 });
 
 test("Test successful attack", () => {
@@ -81,9 +97,9 @@ test("Test missed attack", () => {
 
   gameboard.placeShip([3, 4], 3, "H");
 
-  gameboard.receiveAttack([4, 5]);
+  gameboard.receiveAttack([0, 0]);
 
-  expect(gameboard.board[4][5]).toMatch("X");
+  expect(gameboard.board[0][0]).toMatch("X");
 });
 
 test("Test sunk ships", () => {
