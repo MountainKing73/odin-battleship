@@ -6,9 +6,10 @@ const initialize2DArray = (width, height, val = null) =>
   );
 
 class Gameboard {
-  constructor() {
+  constructor(showShips) {
     this.board = initialize2DArray(10, 10);
     this.ships = new Array();
+    this.showShips = showShips;
   }
 
   #validPlacement(startLoc, length, direction) {
@@ -66,11 +67,20 @@ class Gameboard {
     return this.board;
   }
 
+  getShowShips() {
+    return this.showShips;
+  }
+
+  getRemainingShips() {
+    return this.ships.filter((ship) => !ship.isSunk()).length;
+  }
+
   receiveAttack(loc) {
     let content = this.board[loc[0]][loc[1]];
 
     if (content instanceof Ship) {
       content.hit();
+      this.board[loc[0]][loc[1]] = "H";
     } else {
       this.board[loc[0]][loc[1]] = "X";
     }

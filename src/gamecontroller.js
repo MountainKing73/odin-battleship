@@ -6,10 +6,11 @@ import { Ship } from "./ship";
 class GameController {
   constructor() {
     this.player1 = new Player("Human");
-    this.player2 = new Player("Human");
+    this.player2 = new Player("Computer");
     this.gameUI = new GameUI(
       this.player1.getGameboard(),
       this.player2.getGameboard(),
+      this.squareClicked,
     );
     this.gameUI.refreshBoards();
   }
@@ -69,8 +70,19 @@ class GameController {
     this.gameUI.refreshBoards();
   }
 
+  squareClicked = (event) => {
+    if (event.target.getAttribute("boardNum") === "2") {
+      this.player2
+        .getGameboard()
+        .receiveAttack([
+          event.target.getAttribute("row"),
+          event.target.getAttribute("col"),
+        ]);
+    }
+    this.gameUI.refreshBoards();
+  };
+
   run() {
-    console.log("starting game");
     this.randomShips(this.player1);
     this.randomShips(this.player2);
   }

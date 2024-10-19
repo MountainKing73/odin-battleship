@@ -1,10 +1,12 @@
 import { Gameboard } from "./gameboard";
+import { GameController } from "./gamecontroller";
 import { Ship } from "./ship";
 
 class GameUI {
-  constructor(player1Gameboard, player2Gameboard) {
+  constructor(player1Gameboard, player2Gameboard, attackCallback) {
     this.player1Gameboard = player1Gameboard;
     this.player2Gameboard = player2Gameboard;
+    this.attackCallback = attackCallback;
     this.Player1Container = document.querySelector("#Player1Container");
     this.Player2Container = document.querySelector("#Player2Container");
   }
@@ -19,32 +21,34 @@ class GameUI {
         col.setAttribute("col", j);
         col.setAttribute("row", i);
         col.setAttribute("boardNum", boardNum);
-        if (gameboard.getBoard()[i][j] instanceof Ship) {
+        col.addEventListener("click", this.attackCallback);
+        if (
+          gameboard.getBoard()[i][j] instanceof Ship &&
+          gameboard.getShowShips()
+        ) {
           col.classList.add("ship");
+        } else if (gameboard.getBoard()[i][j] === "X") {
+          col.innerText = "X";
+          col.removeEventListener("click", this.attackCallback);
+        } else if (gameboard.getBoard()[i][j] === "H") {
+          col.classList.add("hit");
+          col.removeEventListener("click", this.attackCallback);
         }
-        col.addEventListener("click", this.squareClicked);
+        //col.addEventListener("click", this.squareClicked);
         row.appendChild(col);
       }
       container.appendChild(row);
     }
+    const status = document.createElement("div");
+    const shipsRemaining = gameboard.getRemainingShips();
+    status.innerText = "Remaining ships: " + shipsRemaining;
+    container.appendChild(status);
   }
   refreshBoards() {
     this.Player1Container.innerHTML = "";
     this.#drawBoard(this.Player1Container, this.player1Gameboard, 1);
     this.Player2Container.innerHTML = "";
     this.#drawBoard(this.Player2Container, this.player2Gameboard, 2);
-  }
-
-  squareClicked(event) {
-    console.log(
-      "Square was clicked on Board #" +
-        event.target.getAttribute("boardNum") +
-        ": [" +
-        event.target.getAttribute("col") +
-        ", " +
-        event.target.getAttribute("row") +
-        "]",
-    );
   }
 }
 
