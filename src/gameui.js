@@ -11,7 +11,7 @@ class GameUI {
     this.Player2Container = document.querySelector("#Player2Container");
   }
 
-  #drawBoard(container, gameboard, boardNum) {
+  #drawBoard(container, gameboard, boardNum, clickable) {
     for (let i = 0; i < gameboard.getBoard().length; i++) {
       const row = document.createElement("div");
       row.classList.add("row");
@@ -21,7 +21,11 @@ class GameUI {
         col.setAttribute("col", j);
         col.setAttribute("row", i);
         col.setAttribute("boardNum", boardNum);
-        col.addEventListener("click", this.attackCallback);
+        if (clickable) {
+          col.addEventListener("click", this.attackCallback);
+        } else {
+          col.removeEventListener("click", this.attackCallback);
+        }
         if (
           gameboard.getBoard()[i][j] instanceof Ship &&
           gameboard.getShowShips()
@@ -44,11 +48,20 @@ class GameUI {
     status.innerText = "Remaining ships: " + shipsRemaining;
     container.appendChild(status);
   }
-  refreshBoards() {
+
+  refreshPlayer1(clickable) {
     this.Player1Container.innerHTML = "";
-    this.#drawBoard(this.Player1Container, this.player1Gameboard, 1);
+    this.#drawBoard(this.Player1Container, this.player1Gameboard, 1, clickable);
+  }
+
+  refreshPlayer2(clickable) {
     this.Player2Container.innerHTML = "";
-    this.#drawBoard(this.Player2Container, this.player2Gameboard, 2);
+    this.#drawBoard(this.Player2Container, this.player2Gameboard, 2, clickable);
+  }
+
+  refreshBoards() {
+    this.refreshPlayer1();
+    this.refreshPlayer2();
   }
 }
 

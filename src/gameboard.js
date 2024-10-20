@@ -10,6 +10,7 @@ class Gameboard {
     this.board = initialize2DArray(10, 10);
     this.ships = new Array();
     this.showShips = showShips;
+    this.moves = new Array();
   }
 
   #validPlacement(startLoc, length, direction) {
@@ -75,6 +76,16 @@ class Gameboard {
     return this.ships.filter((ship) => !ship.isSunk()).length;
   }
 
+  validMove(row, col) {
+    return (
+      row >= 0 &&
+      row < 10 &&
+      col >= 0 &&
+      col < 10 &&
+      !this.moves.includes([row, col])
+    );
+  }
+
   receiveAttack(loc) {
     let content = this.board[loc[0]][loc[1]];
 
@@ -84,6 +95,8 @@ class Gameboard {
     } else {
       this.board[loc[0]][loc[1]] = "X";
     }
+
+    this.moves.push(loc);
   }
 
   allSunk() {

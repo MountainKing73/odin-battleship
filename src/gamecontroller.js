@@ -66,25 +66,41 @@ class GameController {
         break;
       } catch (error) {}
     }
+  }
 
-    this.gameUI.refreshBoards();
+  // Pass the oppenent to check for remaining ships
+  checkWin(player) {
+    return player.getGameboard().getRemainingShips() === 0;
   }
 
   squareClicked = (event) => {
-    if (event.target.getAttribute("boardNum") === "2") {
-      this.player2
-        .getGameboard()
-        .receiveAttack([
-          event.target.getAttribute("row"),
-          event.target.getAttribute("col"),
-        ]);
+    this.player2
+      .getGameboard()
+      .receiveAttack([
+        event.target.getAttribute("row"),
+        event.target.getAttribute("col"),
+      ]);
+    this.gameUI.refreshPlayer2(false);
+    this.computerTurn();
+    if (this.checkWin(this.player2)) {
+      window.alert("Player Wins!");
     }
-    this.gameUI.refreshBoards();
   };
+
+  computerTurn() {
+    this.player2.computerTurn(this.player1);
+    this.gameUI.refreshPlayer1(false);
+    this.gameUI.refreshPlayer2(true);
+    if (this.checkWin(this.player1)) {
+      window.alert("Computer Wins!");
+    }
+  }
 
   run() {
     this.randomShips(this.player1);
     this.randomShips(this.player2);
+    this.gameUI.refreshPlayer1(false);
+    this.gameUI.refreshPlayer2(true);
   }
 }
 
