@@ -3,6 +3,11 @@
   gap: 50px;
 }
 
+.name {
+  width: 420px;
+  text-align: center;
+}
+
 .PlayerContainer {
   width: 420px;
   height: 420px;
@@ -11,11 +16,11 @@
 }
 
 #Player1Container {
-  background-color: lightgrey;
+  background-color: lightblue;
 }
 
 #Player2Container {
-  background-color: lightgrey;
+  background-color: lightblue;
 }
 
 .row {
