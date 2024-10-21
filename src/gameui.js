@@ -63,6 +63,20 @@ class GameUI {
     this.refreshPlayer1();
     this.refreshPlayer2();
   }
+
+  showResult(msg, newGameCallback) {
+    const result = document.querySelector("#Result");
+    result.innerText = msg;
+    const newBtn = document.createElement("button");
+    newBtn.innerText = "New Game";
+    newBtn.addEventListener("click", newGameCallback);
+    result.appendChild(newBtn);
+  }
+
+  hideResult() {
+    const result = document.querySelector("#Result");
+    result.innerHTML = "";
+  }
 }
 
 export { GameUI };

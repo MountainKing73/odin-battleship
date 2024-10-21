@@ -18,7 +18,7 @@ class Player {
       rndRow = Math.floor(Math.random() * 10);
       rndCol = Math.floor(Math.random() * 10);
     }
-    opponent.getGameboard().receiveAttack([rndRow, rndCol]);
+    opponent.getGameboard().receiveAttack(rndRow, rndCol);
   }
 }
 

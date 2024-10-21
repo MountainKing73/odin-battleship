@@ -13,13 +13,8 @@ class Gameboard {
     this.moves = new Array();
   }
 
-  #validPlacement(startLoc, length, direction) {
-    if (
-      startLoc[0] < 0 ||
-      startLoc[0] > 9 ||
-      startLoc[1] < 0 ||
-      startLoc[1] > 9
-    ) {
+  #validPlacement(row, col, length, direction) {
+    if (row < 0 || row > 9 || col < 0 || col > 9) {
       return false;
     }
 
@@ -33,10 +28,10 @@ class Gameboard {
     }
 
     for (let i = 0; i < length; i++) {
-      if (startLoc[1] + i * yInc > 9 || startLoc[0] + i * xInc > 9) {
+      if (row + i * yInc > 9 || col + i * xInc > 9) {
         return false;
       }
-      if (this.board[startLoc[1] + yInc * i][startLoc[0] + xInc * i] != null) {
+      if (this.board[row + yInc * i][col + xInc * i] != null) {
         return false;
       }
     }
@@ -44,8 +39,8 @@ class Gameboard {
     return true;
   }
 
-  placeShip(startLoc, length, direction) {
-    if (!this.#validPlacement(startLoc, length, direction)) {
+  placeShip(row, col, length, direction) {
+    if (!this.#validPlacement(row, col, length, direction)) {
       throw new Error("Invalid placement");
     }
     let xInc = 0;
@@ -60,7 +55,7 @@ class Gameboard {
     const ship = new Ship(length);
     this.ships.push(ship);
     for (let i = 0; i < length; i++) {
-      this.board[startLoc[1] + yInc * i][startLoc[0] + xInc * i] = ship;
+      this.board[row + yInc * i][col + xInc * i] = ship;
     }
   }
 
@@ -86,17 +81,19 @@ class Gameboard {
     );
   }
 
-  receiveAttack(loc) {
-    let content = this.board[loc[0]][loc[1]];
+  receiveAttack(row, col) {
+    console.log("Receive attack row: " + row + " col: " + col);
+    let content = this.board[row][col];
+    console.log("content: " + content);
 
     if (content instanceof Ship) {
       content.hit();
-      this.board[loc[0]][loc[1]] = "H";
+      this.board[row][col] = "H";
     } else {
-      this.board[loc[0]][loc[1]] = "X";
+      this.board[row][col] = "X";
     }
 
-    this.moves.push(loc);
+    this.moves.push([row, col]);
   }
 
   allSunk() {

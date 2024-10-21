@@ -5,6 +5,12 @@ import { Ship } from "./ship";
 
 class GameController {
   constructor() {
+    this.player1 = null;
+    this.player2 = null;
+    this.gameUI = null;
+  }
+
+  newGame = () => {
     this.player1 = new Player("Human");
     this.player2 = new Player("Computer");
     this.gameUI = new GameUI(
@@ -13,10 +19,10 @@ class GameController {
       this.squareClicked,
     );
     this.gameUI.refreshBoards();
-  }
+  };
 
   #getRandomLoc() {
-    return [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
+    return Math.floor(Math.random() * 9);
   }
 
   #getRandomDir() {
@@ -30,7 +36,12 @@ class GameController {
       try {
         player
           .getGameboard()
-          .placeShip(this.#getRandomLoc(), 2, this.#getRandomDir());
+          .placeShip(
+            this.#getRandomLoc(),
+            this.#getRandomLoc(),
+            2,
+            this.#getRandomDir(),
+          );
         break;
       } catch (error) {}
     }
@@ -38,7 +49,12 @@ class GameController {
       try {
         player
           .getGameboard()
-          .placeShip(this.#getRandomLoc(), 3, this.#getRandomDir());
+          .placeShip(
+            this.#getRandomLoc(),
+            this.#getRandomLoc(),
+            3,
+            this.#getRandomDir(),
+          );
         break;
       } catch (error) {}
     }
@@ -46,7 +62,12 @@ class GameController {
       try {
         player
           .getGameboard()
-          .placeShip(this.#getRandomLoc(), 3, this.#getRandomDir());
+          .placeShip(
+            this.#getRandomLoc(),
+            this.#getRandomLoc(),
+            3,
+            this.#getRandomDir(),
+          );
         break;
       } catch (error) {}
     }
@@ -54,7 +75,12 @@ class GameController {
       try {
         player
           .getGameboard()
-          .placeShip(this.#getRandomLoc(), 4, this.#getRandomDir());
+          .placeShip(
+            this.#getRandomLoc(),
+            this.#getRandomLoc(),
+            4,
+            this.#getRandomDir(),
+          );
         break;
       } catch (error) {}
     }
@@ -62,7 +88,12 @@ class GameController {
       try {
         player
           .getGameboard()
-          .placeShip(this.#getRandomLoc(), 5, this.#getRandomDir());
+          .placeShip(
+            this.#getRandomLoc(),
+            this.#getRandomLoc(),
+            5,
+            this.#getRandomDir(),
+          );
         break;
       } catch (error) {}
     }
@@ -76,14 +107,14 @@ class GameController {
   squareClicked = (event) => {
     this.player2
       .getGameboard()
-      .receiveAttack([
+      .receiveAttack(
         event.target.getAttribute("row"),
         event.target.getAttribute("col"),
-      ]);
+      );
     this.gameUI.refreshPlayer2(false);
     this.computerTurn();
     if (this.checkWin(this.player2)) {
-      window.alert("Player Wins!");
+      this.gameUI.showResult("Player Wins!", this.newGame);
     }
   };
 
@@ -92,11 +123,12 @@ class GameController {
     this.gameUI.refreshPlayer1(false);
     this.gameUI.refreshPlayer2(true);
     if (this.checkWin(this.player1)) {
-      window.alert("Computer Wins!");
+      this.gameUI.showResult("Computer Wins!", this.newGame);
     }
   }
 
   run() {
+    this.newGame();
     this.randomShips(this.player1);
     this.randomShips(this.player2);
     this.gameUI.refreshPlayer1(false);

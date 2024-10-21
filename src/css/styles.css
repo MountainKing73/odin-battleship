@@ -1,3 +1,8 @@
+h2 {
+  width: 100%;
+  text-align: center;
+}
+
 #GameContainer {
   display: flex;
   gap: 50px;
