@@ -11,10 +11,10 @@ class Player {
   }
 
   computerTurn(opponent) {
-    let rndRow = -1;
-    let rndCol = -1;
+    let rndRow = Math.floor(Math.random() * 10);
+    let rndCol = Math.floor(Math.random() * 10);
 
-    while (!this.getGameboard().validMove(rndRow, rndCol)) {
+    while (!opponent.getGameboard().validMove(rndRow, rndCol)) {
       rndRow = Math.floor(Math.random() * 10);
       rndCol = Math.floor(Math.random() * 10);
     }

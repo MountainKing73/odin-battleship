@@ -1,7 +1,5 @@
 import { Player } from "./player";
-import { Gameboard } from "./gameboard";
 import { GameUI } from "./gameui";
-import { Ship } from "./ship";
 
 class GameController {
   constructor() {
@@ -18,7 +16,11 @@ class GameController {
       this.player2.getGameboard(),
       this.squareClicked,
     );
-    this.gameUI.refreshBoards();
+    this.randomShips(this.player1);
+    this.randomShips(this.player2);
+    this.gameUI.hideResult();
+    this.gameUI.refreshPlayer1(false);
+    this.gameUI.refreshPlayer2(true);
   };
 
   #getRandomLoc() {
@@ -129,10 +131,6 @@ class GameController {
 
   run() {
     this.newGame();
-    this.randomShips(this.player1);
-    this.randomShips(this.player2);
-    this.gameUI.refreshPlayer1(false);
-    this.gameUI.refreshPlayer2(true);
   }
 }
 

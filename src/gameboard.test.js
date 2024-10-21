@@ -128,6 +128,9 @@ test("Test not sunk ships", () => {
 test("Test duplicate move check", () => {
   const gameboard = new Gameboard();
   gameboard.placeShip(3, 4, 3, "H");
+  gameboard.receiveAttack(2, 6);
   gameboard.receiveAttack(3, 4);
-  expect(gameboard.validMove(3, 4)).toBeTruthy();
+  gameboard.receiveAttack(0, 9);
+  gameboard.receiveAttack(6, 2);
+  expect(gameboard.validMove(3, 4)).toBeFalsy();
 });

@@ -75,7 +75,7 @@ class GameUI {
 
   hideResult() {
     const result = document.querySelector("#Result");
-    result.innerHTML = "";
+    result.innerText = "";
   }
 }
 

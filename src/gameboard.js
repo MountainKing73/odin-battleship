@@ -72,19 +72,14 @@ class Gameboard {
   }
 
   validMove(row, col) {
-    return (
-      row >= 0 &&
-      row < 10 &&
-      col >= 0 &&
-      col < 10 &&
-      !this.moves.includes([row, col])
-    );
+    // Use filter to test if move is in list
+    let test = this.moves.filter((loc) => loc.row === row && loc.col === col);
+
+    return row >= 0 && row < 10 && col >= 0 && col < 10 && test.length === 0;
   }
 
   receiveAttack(row, col) {
-    console.log("Receive attack row: " + row + " col: " + col);
     let content = this.board[row][col];
-    console.log("content: " + content);
 
     if (content instanceof Ship) {
       content.hit();
@@ -93,7 +88,7 @@ class Gameboard {
       this.board[row][col] = "X";
     }
 
-    this.moves.push([row, col]);
+    this.moves.push({ row: row, col: col });
   }
 
   allSunk() {
