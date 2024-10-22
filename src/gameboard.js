@@ -9,6 +9,11 @@ class Gameboard {
   constructor(showShips) {
     this.board = initialize2DArray(10, 10);
     this.ships = new Array();
+    this.ships.push(new Ship("Carrier", 5));
+    this.ships.push(new Ship("Battleship", 4));
+    this.ships.push(new Ship("Destroyer", 3));
+    this.ships.push(new Ship("Submarine", 3));
+    this.ships.push(new Ship("Patrol Boat", 2));
     this.showShips = showShips;
     this.moves = new Array();
   }
@@ -39,8 +44,8 @@ class Gameboard {
     return true;
   }
 
-  placeShip(row, col, length, direction) {
-    if (!this.#validPlacement(row, col, length, direction)) {
+  placeShip(ship, row, col, direction) {
+    if (!this.#validPlacement(row, col, ship.getLength(), direction)) {
       throw new Error("Invalid placement");
     }
     let xInc = 0;
@@ -52,9 +57,7 @@ class Gameboard {
       xInc = 1;
     }
 
-    const ship = new Ship(length);
-    this.ships.push(ship);
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < ship.getLength(); i++) {
       this.board[row + yInc * i][col + xInc * i] = ship;
     }
   }
@@ -65,6 +68,10 @@ class Gameboard {
 
   getShowShips() {
     return this.showShips;
+  }
+
+  getShips() {
+    return this.ships;
   }
 
   getRemainingShips() {

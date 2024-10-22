@@ -6,6 +6,8 @@ class GameController {
     this.player1 = null;
     this.player2 = null;
     this.gameUI = null;
+    const newBtn = document.querySelector("#NewGame");
+    newBtn.addEventListener("click", this.newGame);
   }
 
   newGame = () => {
@@ -16,90 +18,13 @@ class GameController {
       this.player2.getGameboard(),
       this.squareClicked,
     );
-    this.randomShips(this.player1);
-    this.randomShips(this.player2);
+    //this.gameUI.showPlaceShip(this.gameUI.Player1Container);
+    this.player1.randomShips();
+    this.player2.randomShips();
     this.gameUI.hideResult();
     this.gameUI.refreshPlayer1(false);
     this.gameUI.refreshPlayer2(true);
   };
-
-  #getRandomLoc() {
-    return Math.floor(Math.random() * 9);
-  }
-
-  #getRandomDir() {
-    const choice = ["V", "H"];
-    const rnd = Math.floor(Math.random() * 2);
-    return choice[rnd];
-  }
-
-  randomShips(player) {
-    while (true) {
-      try {
-        player
-          .getGameboard()
-          .placeShip(
-            this.#getRandomLoc(),
-            this.#getRandomLoc(),
-            2,
-            this.#getRandomDir(),
-          );
-        break;
-      } catch (error) {}
-    }
-    while (true) {
-      try {
-        player
-          .getGameboard()
-          .placeShip(
-            this.#getRandomLoc(),
-            this.#getRandomLoc(),
-            3,
-            this.#getRandomDir(),
-          );
-        break;
-      } catch (error) {}
-    }
-    while (true) {
-      try {
-        player
-          .getGameboard()
-          .placeShip(
-            this.#getRandomLoc(),
-            this.#getRandomLoc(),
-            3,
-            this.#getRandomDir(),
-          );
-        break;
-      } catch (error) {}
-    }
-    while (true) {
-      try {
-        player
-          .getGameboard()
-          .placeShip(
-            this.#getRandomLoc(),
-            this.#getRandomLoc(),
-            4,
-            this.#getRandomDir(),
-          );
-        break;
-      } catch (error) {}
-    }
-    while (true) {
-      try {
-        player
-          .getGameboard()
-          .placeShip(
-            this.#getRandomLoc(),
-            this.#getRandomLoc(),
-            5,
-            this.#getRandomDir(),
-          );
-        break;
-      } catch (error) {}
-    }
-  }
 
   // Pass the oppenent to check for remaining ships
   checkWin(player) {

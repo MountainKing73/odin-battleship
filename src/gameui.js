@@ -11,6 +11,12 @@ class GameUI {
     this.Player2Container = document.querySelector("#Player2Container");
   }
 
+  showPlaceShip(container) {
+    const placeInstruction = document.createElement("div");
+    placeInstruction.innerText = "Place Battleship";
+    container.append(placeInstruction);
+  }
+
   #drawBoard(container, gameboard, boardNum, clickable) {
     for (let i = 0; i < gameboard.getBoard().length; i++) {
       const row = document.createElement("div");
@@ -46,6 +52,15 @@ class GameUI {
     const status = document.createElement("div");
     const shipsRemaining = gameboard.getRemainingShips();
     status.innerText = "Remaining ships: " + shipsRemaining;
+    const ships = gameboard.getShips();
+    for (let ship of ships) {
+      const shipDiv = document.createElement("div");
+      shipDiv.innerText = ship.getName();
+      if (ship.isSunk()) {
+        shipDiv.classList.add("sunk");
+      }
+      status.appendChild(shipDiv);
+    }
     container.appendChild(status);
   }
 
@@ -67,10 +82,6 @@ class GameUI {
   showResult(msg, newGameCallback) {
     const result = document.querySelector("#Result");
     result.innerText = msg;
-    const newBtn = document.createElement("button");
-    newBtn.innerText = "New Game";
-    newBtn.addEventListener("click", newGameCallback);
-    result.appendChild(newBtn);
   }
 
   hideResult() {
