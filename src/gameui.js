@@ -1,5 +1,3 @@
-import { Gameboard } from "./gameboard";
-import { GameController } from "./gamecontroller";
 import { Ship } from "./ship";
 
 class GameUI {
@@ -7,14 +5,78 @@ class GameUI {
     this.player1Gameboard = player1Gameboard;
     this.player2Gameboard = player2Gameboard;
     this.attackCallback = attackCallback;
-    this.Player1Container = document.querySelector("#Player1Container");
-    this.Player2Container = document.querySelector("#Player2Container");
   }
 
-  showPlaceShip(container) {
-    const placeInstruction = document.createElement("div");
-    placeInstruction.innerText = "Place Battleship";
-    container.append(placeInstruction);
+  hidePlayerContainers() {
+    const gameContainer = document.querySelector("#GameContainer");
+    gameContainer.style.display = "none";
+  }
+
+  showPlayerContainers() {
+    const gameContainer = document.querySelector("#GameContainer");
+    gameContainer.style.display = "flex";
+  }
+
+  showPlaceShip(gameBoard, clickedCallback) {
+    const shipPlacementContainer = document.querySelector(
+      "#ShipPlacementContainer",
+    );
+
+    const placeShip = document.querySelector("#ShipEntry");
+    placeShip.innerHTML = "";
+    const ships = gameBoard.getShips();
+    for (let i = 0; i < ships.length; i++) {
+      const shipName = document.createElement("p");
+      shipName.innerText =
+        ships[i].getName() + " (" + ships[i].getLength() + " spaces)";
+      placeShip.append(shipName);
+
+      const rowInput = document.createElement("INPUT");
+      rowInput.setAttribute("type", "number");
+      rowInput.setAttribute("name", "rowInput");
+      rowInput.id = "rowInput" + i;
+      rowInput.classList.add("ShipInput");
+      placeShip.append(rowInput);
+
+      const colInput = document.createElement("INPUT");
+      colInput.setAttribute("type", "number");
+      colInput.setAttribute("name", "colInput");
+      colInput.id = "colInput" + i;
+      colInput.classList.add("ShipInput");
+      placeShip.append(colInput);
+
+      const dirList = document.createElement("select");
+      dirList.id = "dirList" + i;
+      const vertical = document.createElement("option");
+      vertical.value = "V";
+      vertical.text = "V";
+      dirList.append(vertical);
+      const horizontal = document.createElement("option");
+      horizontal.value = "H";
+      horizontal.text = "H";
+      dirList.append(horizontal);
+      placeShip.append(dirList);
+
+      const placeBtn = document.createElement("Button");
+      placeBtn.innerText = "Place";
+      placeBtn.setAttribute("shipNum", i);
+      placeBtn.addEventListener("click", clickedCallback);
+      placeShip.append(placeBtn);
+    }
+    shipPlacementContainer.append(placeShip);
+    const boardContainer = document.querySelector("#selectBoard");
+    boardContainer.innerHTML = "";
+    shipPlacementContainer.append(boardContainer);
+    this.#drawBoard(boardContainer, this.player1Gameboard, 1, false);
+  }
+
+  getShipEntryData(shipNum) {
+    const rowInput = document.querySelector("#rowInput" + shipNum);
+    const colInput = document.querySelector("#colInput" + shipNum);
+    const dirInput = document.querySelector("#dirList" + shipNum);
+    // TODO: Add error handling
+    console.log("rowInput type: " + typeof rowInput.value);
+    return [Number(rowInput.value), Number(colInput.value), dirInput.value];
   }
 
   #drawBoard(container, gameboard, boardNum, clickable) {
@@ -49,6 +111,9 @@ class GameUI {
       }
       container.appendChild(row);
     }
+  }
+
+  #showShips(container, gameboard) {
     const status = document.createElement("div");
     const shipsRemaining = gameboard.getRemainingShips();
     status.innerText = "Remaining ships: " + shipsRemaining;
@@ -65,13 +130,23 @@ class GameUI {
   }
 
   refreshPlayer1(clickable) {
-    this.Player1Container.innerHTML = "";
-    this.#drawBoard(this.Player1Container, this.player1Gameboard, 1, clickable);
+    const player1Container = document.querySelector("#Player1Container");
+    player1Container.innerHTML = "";
+    this.#drawBoard(player1Container, this.player1Gameboard, 1, clickable);
+    this.#showShips(player1Container, this.player1Gameboard);
   }
 
   refreshPlayer2(clickable) {
-    this.Player2Container.innerHTML = "";
-    this.#drawBoard(this.Player2Container, this.player2Gameboard, 2, clickable);
+    const player2Container = document.querySelector("#Player2Container");
+    player2Container.innerHTML = "";
+    this.#drawBoard(player2Container, this.player2Gameboard, 2, clickable);
+    this.#showShips(player2Container, this.player2Gameboard);
+  }
+
+  refreshSelectBoard(board) {
+    const boardContainer = document.querySelector("#selectBoard");
+    boardContainer.innerHTML = "";
+    this.#drawBoard(boardContainer, board, 0, false);
   }
 
   refreshBoards() {

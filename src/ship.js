@@ -3,7 +3,16 @@ class Ship {
     this.name = name;
     this.len = len;
     this.hits = 0;
+    this.placed = false;
     this.sunk = false;
+  }
+
+  setPlaced() {
+    this.placed = true;
+  }
+
+  getPlaced() {
+    return this.placed;
   }
 
   getName() {

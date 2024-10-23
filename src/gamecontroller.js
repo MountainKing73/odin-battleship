@@ -8,9 +8,14 @@ class GameController {
     this.gameUI = null;
     const newBtn = document.querySelector("#NewGame");
     newBtn.addEventListener("click", this.newGame);
+    const startBtn = document.querySelector("#startBtn");
+    startBtn.disabled = true;
+    const randomBtn = document.querySelector("#randomBtn");
+    randomBtn.disabled = true;
   }
 
-  newGame = () => {
+  newGame() {
+    // TODO: Allow player to place ships or choose random
     this.player1 = new Player("Human");
     this.player2 = new Player("Computer");
     this.gameUI = new GameUI(
@@ -18,10 +23,20 @@ class GameController {
       this.player2.getGameboard(),
       this.squareClicked,
     );
+
+    this.gameUI.hidePlayerContainers();
+    //    this.gameUI.hideResult();
+    const randomBtn = document.querySelector("#randomBtn");
+    randomBtn.addEventListener("click", this.randomClicked);
+    randomBtn.disabled = false;
+    this.gameUI.showPlaceShip(this.player1.getGameboard(), this.placeClicked);
+  }
+
+  startGame = () => {
     //this.gameUI.showPlaceShip(this.gameUI.Player1Container);
-    this.player1.randomShips();
+    this.gameUI.showPlayerContainers();
+    //this.player1.randomShips();
     this.player2.randomShips();
-    this.gameUI.hideResult();
     this.gameUI.refreshPlayer1(false);
     this.gameUI.refreshPlayer2(true);
   };
@@ -30,6 +45,33 @@ class GameController {
   checkWin(player) {
     return player.getGameboard().getRemainingShips() === 0;
   }
+
+  randomClicked = () => {
+    this.player1.randomShips();
+    //this.gameUI.refreshSelectBoard(this.player1.getGameboard());
+  };
+
+  placeClicked = (event) => {
+    const shipNum = event.target.getAttribute("shipnum");
+    const [row, col, dir] = this.gameUI.getShipEntryData(shipNum);
+
+    try {
+      this.player1
+        .getGameboard()
+        .placeShip(
+          this.player1.getGameboard().getShips()[shipNum],
+          row,
+          col,
+          dir,
+        );
+    } catch (error) {
+      alert("Invalid ship placement. Try again.");
+      return;
+    }
+
+    this.gameUI.refreshSelectBoard(this.player1.getGameboard());
+    event.target.disabled = true;
+  };
 
   squareClicked = (event) => {
     this.player2

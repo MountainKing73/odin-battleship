@@ -32,6 +32,8 @@ class Gameboard {
       xInc = 1;
     }
 
+    console.log("for loop start:");
+
     for (let i = 0; i < length; i++) {
       if (row + i * yInc > 9 || col + i * xInc > 9) {
         return false;

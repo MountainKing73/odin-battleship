@@ -56,3 +56,18 @@
   color: red;
   text-decoration: line-through;
 }
+
+#ShipEntry {
+  width: 420px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+
+#ShipEntry p {
+  margin: 0px;
+  width: 200px;
+}
+
+.ShipInput {
+  width: 40px;
+}
