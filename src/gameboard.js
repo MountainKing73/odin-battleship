@@ -32,8 +32,6 @@ class Gameboard {
       xInc = 1;
     }
 
-    console.log("for loop start:");
-
     for (let i = 0; i < length; i++) {
       if (row + i * yInc > 9 || col + i * xInc > 9) {
         return false;
@@ -62,6 +60,12 @@ class Gameboard {
     for (let i = 0; i < ship.getLength(); i++) {
       this.board[row + yInc * i][col + xInc * i] = ship;
     }
+
+    ship.setPlaced();
+  }
+
+  allShipsPlaced() {
+    return this.ships.filter((ship) => ship.isPlaced());
   }
 
   getBoard() {

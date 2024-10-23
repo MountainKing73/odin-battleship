@@ -17,13 +17,37 @@ class GameUI {
     gameContainer.style.display = "flex";
   }
 
+  hidePlaceShip() {
+    console.log("Hide ship placement");
+    const shipPlacementContainer = document.querySelector(
+      "#ShipPlacementContainer",
+    );
+    shipPlacementContainer.style.display = "none";
+  }
+
   showPlaceShip(gameBoard, clickedCallback) {
     const shipPlacementContainer = document.querySelector(
       "#ShipPlacementContainer",
     );
+    shipPlacementContainer.style.display = "block";
 
     const placeShip = document.querySelector("#ShipEntry");
     placeShip.innerHTML = "";
+    const nameHdr = document.createElement("div");
+    nameHdr.innerText = "";
+    placeShip.append(nameHdr);
+    const rowHdr = document.createElement("div");
+    rowHdr.innerText = "Row";
+    placeShip.append(rowHdr);
+    const colHdr = document.createElement("div");
+    colHdr.innerText = "Col";
+    placeShip.append(colHdr);
+    const dirHdr = document.createElement("div");
+    dirHdr.innerText = "Dir";
+    placeShip.append(dirHdr);
+    const placeHdr = document.createElement("div");
+    placeHdr.innerText = "";
+    placeShip.append(placeHdr);
     const ships = gameBoard.getShips();
     for (let i = 0; i < ships.length; i++) {
       const shipName = document.createElement("p");

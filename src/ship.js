@@ -11,7 +11,7 @@ class Ship {
     this.placed = true;
   }
 
-  getPlaced() {
+  isPlaced() {
     return this.placed;
   }
 

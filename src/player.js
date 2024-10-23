@@ -20,6 +20,10 @@ class Player {
     return choice[rnd];
   }
 
+  resetBoard() {
+    this.gameboard = new Gameboard(this.type === "Human");
+  }
+
   randomShips() {
     const ships = this.gameboard.getShips();
     for (let ship of ships) {

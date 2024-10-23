@@ -10,12 +10,12 @@ class GameController {
     newBtn.addEventListener("click", this.newGame);
     const startBtn = document.querySelector("#startBtn");
     startBtn.disabled = true;
+    startBtn.addEventListener("click", this.startGame);
     const randomBtn = document.querySelector("#randomBtn");
     randomBtn.disabled = true;
   }
 
   newGame() {
-    // TODO: Allow player to place ships or choose random
     this.player1 = new Player("Human");
     this.player2 = new Player("Computer");
     this.gameUI = new GameUI(
@@ -24,8 +24,10 @@ class GameController {
       this.squareClicked,
     );
 
+    this.gameUI.hideResult();
     this.gameUI.hidePlayerContainers();
-    //    this.gameUI.hideResult();
+    const startBtn = document.querySelector("#startBtn");
+    startBtn.disabled = true;
     const randomBtn = document.querySelector("#randomBtn");
     randomBtn.addEventListener("click", this.randomClicked);
     randomBtn.disabled = false;
@@ -33,7 +35,7 @@ class GameController {
   }
 
   startGame = () => {
-    //this.gameUI.showPlaceShip(this.gameUI.Player1Container);
+    this.gameUI.hidePlaceShip();
     this.gameUI.showPlayerContainers();
     //this.player1.randomShips();
     this.player2.randomShips();
@@ -47,8 +49,12 @@ class GameController {
   }
 
   randomClicked = () => {
+    this.player1.resetBoard();
     this.player1.randomShips();
-    //this.gameUI.refreshSelectBoard(this.player1.getGameboard());
+    this.gameUI.refreshSelectBoard(this.player1.getGameboard());
+
+    const startBtn = document.querySelector("#startBtn");
+    startBtn.disabled = false;
   };
 
   placeClicked = (event) => {
@@ -71,6 +77,10 @@ class GameController {
 
     this.gameUI.refreshSelectBoard(this.player1.getGameboard());
     event.target.disabled = true;
+    if (this.player1.getGameboard().allShipsPlaced()) {
+      const startBtn = document.querySelector("#startBtn");
+      startBtn.disabled = false;
+    }
   };
 
   squareClicked = (event) => {
